@@ -10,24 +10,33 @@ export const client = new ApolloClient({
 
 /* define a GraphQL query  */
 export const exploreProfiles = gql`
-    query ExploreProfiles {
-        exploreProfiles(request: { sortCriteria: MOST_FOLLOWERS }) {
-            items {
-            id
-            name
-            bio
-            handle
-            picture {
-                ... on MediaSet {
-                original {
-                    url
+    query ExploreProfiles($limit:LimitScalar, $cursor:Cursor){
+        exploreProfiles(request: { 
+                sortCriteria: MOST_FOLLOWERS, 
+                limit:$limit,
+                cursor:$cursor }) 
+        {
+            items{
+                id
+                name
+                bio
+                handle
+                picture {
+                    ... on MediaSet {
+                    original {
+                        url
+                    }
+                    }
                 }
+                stats {
+                    totalFollowers
                 }
             }
-            stats {
-                totalFollowers
+            pageInfo{
+                prev
+                next
             }
-            }
+
         }
     }
 `
